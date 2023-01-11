@@ -124,8 +124,6 @@ public class Test
                             amount = 2,
                             weight = 700
                         },
-
-
                     }
                 }
             }

@@ -15,20 +15,9 @@ namespace SDEK
     public class Integration
     {
         static string url = "https://api.edu.cdek.ru/v2/";
-        public static async Task Auth(AuthDTO model) 
+        public static async Task<AuthResponseDTO> Auth(AuthDTO model) 
         {
             HttpClient client = new HttpClient();
-
-
-            //using StringContent postData = new(
-            //    JsonSerializer.Serialize(new
-            //    {
-            //        grant_type = model.grant_type,
-            //        client_id = model.client_id,
-            //        client_secret = model.client_secret,
-            //    }),
-            //    Encoding.UTF8,
-            //    "application/x-www-form-urlencoded");
 
             var parameters = new Dictionary<string, string> { 
                 { "grant_type", model.grant_type },
@@ -39,18 +28,9 @@ namespace SDEK
             using (HttpResponseMessage result = client.PostAsync("https://api.edu.cdek.ru/v2/oauth/token?parameters", postData).Result)
             {
                 string resultJson = result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"{resultJson}");
+                //string jsonString = JsonSerializer.Serialize<WeatherForecast>(weatherForecast);
+                return JsonSerializer.Deserialize<AuthResponseDTO>(resultJson);
             }
-
-            //using HttpResponseMessage response = await client.PostAsync(
-            //    "https://api.edu.cdek.ru/v2/oauth/token?parameters",
-            //    jsonContent);
-
-            //response.EnsureSuccessStatusCode();
-
-
-            //var jsonResponse = await response.Content.ReadAsStringAsync();
-            //Console.WriteLine($"{jsonResponse}\n");
         }
 
         public static async Task RegOrder(OrderDTO model, string token) 
@@ -58,10 +38,6 @@ namespace SDEK
 
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-            //using StringContent postData = new(
-            //    JsonSerializer.Serialize(model),
-            //    Encoding.UTF8,
-            //    "application/json");
 
             using StringContent postData = new(
                 JsonSerializer.Serialize(new 
@@ -80,7 +56,6 @@ namespace SDEK
             using (HttpResponseMessage result = client.PostAsync("https://api.edu.cdek.ru/v2/orders", postData).Result)
             {
                 string resultJson = result.Content.ReadAsStringAsync().Result;
-                //return JObject.Parse(resultJson);
                 Console.WriteLine($"{resultJson}");
             }
         }
@@ -93,12 +68,6 @@ namespace SDEK
             var response =  client.GetAsync("https://api.edu.cdek.ru/v2/orders/" + id).Result;
             Console.WriteLine(await response.Content.ReadAsStringAsync());
 
-            /*using (HttpResponseMessage response = await client.GetAsync("https://api.edu.cdek.ru/v2/orders/" + id))
-            {
-                string resultJson = response.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"{resultJson}");
-            }*/
-            //return new JsonResult();
         }
 
         public static async Task DeleteOrder(string id, string token) 
