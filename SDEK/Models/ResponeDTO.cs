@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SDEK.Models
 {
-    public class RefusalResponseDTO
+    public class ResponeDTO
     {
         public OrderInfoModel entity { get; set; }
         public List<Request> requests { get; set; }

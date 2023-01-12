@@ -163,19 +163,12 @@ namespace SDEK
             using StringContent postData = new(
                 JsonSerializer.Serialize(new
                 {
-                    uuid = model.uuid,
-                    tariff_code = model.Tariff_code,
-                    shipment_point = model.Shipment_point,
-                    sender = model.Sender,
-                    recipient = model.Recipient,
-                    to_location = model.ToLocation,
-                    services = model.Services,
-                    packages = model.Packages
+                    uuid = "72753031-1ed0-4598-9cf2-c8fd597c2c79"
                 }),
                 Encoding.UTF8,
                 "application/json");
 
-            var response = await client.PatchAsync("https://api.edu.cdek.ru/v2/orders", postData);
+            var response = client.PatchAsync("https://api.edu.cdek.ru/v2/orders", postData).Result;
             Console.WriteLine($"{response}");
 
         }
