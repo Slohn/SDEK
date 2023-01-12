@@ -22,7 +22,7 @@ namespace SDEK.Models
         //    } 
         //}
 
-        public string date_time { get; set; }
+        public DateTime date_time { get; set; }
         public string state { get; set; }
         public List<ErrorModel>? errors { get; set; }
         public List<WarningModel> warnings { get; set; }

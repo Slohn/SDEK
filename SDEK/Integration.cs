@@ -11,6 +11,11 @@ using System.Runtime.InteropServices.JavaScript;
 using System;
 using System.Web;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Net.Http.Json;
+using System.Security.Principal;
+using System.Web.Helpers;
+using Newtonsoft.Json;
 
 namespace SDEK
 {
@@ -31,7 +36,7 @@ namespace SDEK
             {
                 string resultJson = result.Content.ReadAsStringAsync().Result;
                 //string jsonString = JsonSerializer.Serialize<WeatherForecast>(weatherForecast);
-                return JsonSerializer.Deserialize<AuthResponseDTO>(resultJson);
+                return JsonConvert.DeserializeObject<AuthResponseDTO>(resultJson);
             }
         }
 
@@ -42,7 +47,7 @@ namespace SDEK
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             using StringContent postData = new(
-                JsonSerializer.Serialize(new 
+                JsonConvert.SerializeObject(new 
                 {
                     tariff_code = model.Tariff_code,
                     shipment_point = model.Shipment_point,
@@ -58,7 +63,7 @@ namespace SDEK
             using (HttpResponseMessage result = client.PostAsync("https://api.edu.cdek.ru/v2/orders", postData).Result)
             {
                 string resultJson = result.Content.ReadAsStringAsync().Result;
-                return JsonSerializer.Deserialize<ResponeDTO>(resultJson);
+                return JsonConvert.DeserializeObject<ResponeDTO>(resultJson);
             }
         }
 
@@ -69,8 +74,9 @@ namespace SDEK
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             var response =  client.GetAsync("https://api.edu.cdek.ru/v2/orders/" + id).Result;
             string resultJson = response.Content.ReadAsStringAsync().Result;
-
-            return JsonSerializer.Deserialize<OrderInfoResponseDTO>(resultJson);
+            var res = JsonConvert.DeserializeObject<OrderInfoResponseDTO>(resultJson);
+            return res;
+            //return JsonSerializer.Deserialize<OrderInfoResponseDTO>(resultJson);
 
         }
 
@@ -139,7 +145,7 @@ namespace SDEK
             var response = client.GetAsync(url).Result;
             string resultJson = response.Content.ReadAsStringAsync().Result;
 
-            return JsonSerializer.Deserialize<List<OfficeResponseDTO>>(resultJson);
+            return JsonConvert.DeserializeObject<List<OfficeResponseDTO>>(resultJson);
         }
 
 
@@ -151,7 +157,7 @@ namespace SDEK
             var response = await client.PostAsync("https://api.edu.cdek.ru/v2/orders/" + id + "/refusal", null);
             var resultJson = response.Content.ReadAsStringAsync().Result;
 
-            return JsonSerializer.Deserialize<ResponeDTO>(resultJson);
+            return JsonConvert.DeserializeObject<ResponeDTO>(resultJson);
         }
 
         public static async Task OrderUpdate(OrderDTO model,string token) 
@@ -161,7 +167,7 @@ namespace SDEK
 
 
             using StringContent postData = new(
-                JsonSerializer.Serialize(new
+                JsonConvert.SerializeObject(new
                 {
                     uuid = "72753031-1ed0-4598-9cf2-c8fd597c2c79"
                 }),
