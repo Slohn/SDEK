@@ -14,7 +14,6 @@ namespace SDEK.Models
         public OrderInfoModel entity { get; set; }
         public List<Status> statuses { get; set; }
         public List<Request> requests { get; set; }
-        public List<ErrorModel>? errors { get; set; }
     }
 
     public class OrderInfoModel 

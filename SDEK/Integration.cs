@@ -10,6 +10,7 @@ using System.Web.WebPages;
 using System.Runtime.InteropServices.JavaScript;
 using System;
 using System.Web;
+using System.Collections.Generic;
 
 namespace SDEK
 {
@@ -34,7 +35,7 @@ namespace SDEK
             }
         }
 
-        public static async Task RegOrder(OrderDTO model, string token) 
+        public static async Task<ResponeDTO> RegOrder(OrderDTO model, string token) 
         {
 
             HttpClient client = new HttpClient();
@@ -57,7 +58,7 @@ namespace SDEK
             using (HttpResponseMessage result = client.PostAsync("https://api.edu.cdek.ru/v2/orders", postData).Result)
             {
                 string resultJson = result.Content.ReadAsStringAsync().Result;
-                Console.WriteLine($"{resultJson}");
+                return JsonSerializer.Deserialize<ResponeDTO>(resultJson);
             }
         }
 
@@ -68,8 +69,6 @@ namespace SDEK
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             var response =  client.GetAsync("https://api.edu.cdek.ru/v2/orders/" + id).Result;
             string resultJson = response.Content.ReadAsStringAsync().Result;
-            string srt = "2023-01-12T09:32:50+0000";
-            var res = JsonSerializer.Deserialize<DateTime>(srt);
 
             return JsonSerializer.Deserialize<OrderInfoResponseDTO>(resultJson);
 
@@ -144,12 +143,15 @@ namespace SDEK
         }
 
 
-        public static async Task RefusalReg(string id, string token) 
+        public static async Task<ResponeDTO> RefusalReg(string id, string token) 
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             var response = await client.PostAsync("https://api.edu.cdek.ru/v2/orders/" + id + "/refusal", null);
+            var resultJson = response.Content.ReadAsStringAsync().Result;
+
+            return JsonSerializer.Deserialize<ResponeDTO>(resultJson);
         }
 
         public static async Task OrderUpdate(OrderDTO model,string token) 

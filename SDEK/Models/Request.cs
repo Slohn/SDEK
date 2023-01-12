@@ -10,8 +10,23 @@ namespace SDEK.Models
     {
         public string? request_uuid { get; set; }
         public string type { get; set; }
-        public DateTime date_time { get; set; }
+        //public string date_time 
+        //{
+        //    get 
+        //    {
+        //        return date_time;
+        //    } 
+        //    set 
+        //    {
+        //        date_time = value;   
+        //    } 
+        //}
+
+        public string date_time { get; set; }
         public string state { get; set; }
+        public List<ErrorModel>? errors { get; set; }
+        public List<WarningModel> warnings { get; set; }
+
 
     }
 }
