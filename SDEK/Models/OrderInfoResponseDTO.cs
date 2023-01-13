@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace SDEK.Models
 {
@@ -18,6 +17,7 @@ namespace SDEK.Models
 
     public class OrderInfoModel 
     {
+        public string uuid { get; set; }
         public bool is_return { get; set; }
         public bool is_reverse { get; set; }
         public bool is_client_return { get; set; }
